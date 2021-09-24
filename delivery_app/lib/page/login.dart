@@ -5,6 +5,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_important',
+  'Important notifications',
+  'This is description for this channel',
+  importance: Importance.high,
+  playSound: true
+  );
+
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = 
+  FlutterLocalNotificationsPlugin();
 
 class LoginPage extends StatefulWidget {
   const LoginPage({ Key? key }) : super(key: key);
@@ -29,36 +41,30 @@ class _LoginPageState extends State<LoginPage> {
       token = value.toString();
         print(value);
     });
-    }
-    // messaging(
-    //       onMessage: (Map<String, dynamic> message) async {
-    //         print("onMessage: $message");
-    //         showDialog(
-    //             context: context,
-    //             builder: (context) => AlertDialog(
-    //                     content: ListTile(
-    //                     title: Text(message['notification']['title']),
-    //                     subtitle: Text(message['notification']['body']),
-    //                     ),
-    //                     actions: <Widget>[
-    //                     FlatButton(
-    //                         child: Text('Ok'),
-    //                         onPressed: () => Navigator.of(context).pop(),
-    //                     ),
-    //                 ],
-    //             ),
-    //         );
-    //     },
-    //     onLaunch: (Map<String, dynamic> message) async {
-    //         print("onLaunch: $message");
-    //         // TODO optional
-    //     },
-    //     onResume: (Map<String, dynamic> message) async {
-    //         print("onResume: $message");
-    //         // TODO optional
-    //     },
-    //   );
-    // }
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) { 
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android =  message.notification?.android;
+      if(notification != null && android != null)
+      {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              channel.description,
+              color: Colors.blue,
+              playSound: true,
+              icon: '@mipmap/ic_launcher'
+            )
+          )
+        );
+      }
+    });
+  }
+   
     
       _saveDeviceToken() async {
     // Get the current user

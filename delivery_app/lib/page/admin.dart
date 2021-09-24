@@ -6,129 +6,6 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../models/order.dart';
-// class Admin extends StatefulWidget {
-//   const Admin({ Key? key }) : super(key: key);
-
-//   @override
-//   _AdminState createState() => _AdminState();
-// }
-
-// class _AdminState extends State<Admin> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text('Admin')),
-//       drawer: Drawer(
-//          child: ListView(
-//     padding: EdgeInsets.zero,
-//     children: [
-//       const DrawerHeader(
-//         decoration: BoxDecoration(
-//           color: Colors.blue,
-//         ),
-//         child: Text('Lara Admin'),
-//       ),
-//       ListTile(
-//         title: const Text('Orders'),
-//         onTap: () {
-//         },
-//       ),
-//       ListTile(
-//         title: const Text('Feedback'),
-//         onTap: () {
-//           // Update the state of the app.
-//           // ...
-//         },
-//       ),
-//     ],
-//   ),
-//       ),
-//       body: DataTable(
-//       columns: const <DataColumn>[
-//         DataColumn(
-//           label: Text(
-//             'OrderId#',
-//             style: TextStyle(fontStyle: FontStyle.italic),
-//           ),
-//         ),
-//         DataColumn(
-//           label: Text(
-//             'Name',
-//             style: TextStyle(fontStyle: FontStyle.italic),
-//           ),
-//         ),
-//         DataColumn(
-//           label: Text(
-//             'Stock Address',
-//             style: TextStyle(fontStyle: FontStyle.italic),
-//           ),
-//         ),
-//          DataColumn(
-//           label: Text(
-//             'Delivery Address',
-//             style: TextStyle(fontStyle: FontStyle.italic),
-//           ),
-//         ),
-//         DataColumn(
-//           label: Text(
-//             'Email',
-//             style: TextStyle(fontStyle: FontStyle.italic),
-//           ),
-//         ),
-//         DataColumn(
-//           label: Text(
-//             'Phone',
-//             style: TextStyle(fontStyle: FontStyle.italic),
-//           ),
-//         ),
-//         DataColumn(
-//           label: Text(
-//             'Status',
-//             style: TextStyle(fontStyle: FontStyle.italic),
-//           ),
-//         ),
-//         DataColumn(
-//           label: Text(
-//             'Order Date',
-//             style: TextStyle(fontStyle: FontStyle.italic),
-//           ),
-//         ),
-//         DataColumn(
-//           label: Text(
-//             'Action',
-//             style: TextStyle(fontStyle: FontStyle.italic),
-//           ),
-//         ),
-//       ],
-//       rows: const <DataRow>[
-//         DataRow(
-//           cells: <DataCell>[
-//             DataCell(Text('Sarah')),
-//             DataCell(Text('19')),
-//             DataCell(Text('Student')),
-//             DataCell(Text(''))
-//           ],
-//         ),
-//         DataRow(
-//           cells: <DataCell>[
-//             DataCell(Text('Janine')),
-//             DataCell(Text('43')),
-//             DataCell(Text('Professor')),
-//           ],
-//         ),
-//         DataRow(
-//           cells: <DataCell>[
-//             DataCell(Text('William')),
-//             DataCell(Text('27')),
-//             DataCell(Text('Associate Professor')),
-//           ],
-//         ),
-//       ],
-//       )
-//     );
-//   }
-// }
-
 
 class JsonDataGrid extends StatefulWidget {
   @override
@@ -154,13 +31,14 @@ class _JsonDataGridState extends State<JsonDataGrid> {
     productlist =
         await list.map<Order>((json) => Order.fromJson(json)).toList();
     jsonDataGridSource = _JsonDataGridSource(productlist);
-    return productlist;
+    return productlist.reversed;
   }
 
   List<GridColumn> getColumns() {
     List<GridColumn> columns;
     columns = ([
       GridColumn(
+        allowSorting: true,
         columnName: 'orderID',
         width: 70,
         label: Container(
@@ -174,6 +52,7 @@ class _JsonDataGridState extends State<JsonDataGrid> {
         ),
       ),
       GridColumn(
+        allowSorting: true,
         columnName: 'ownerName',
         width: 65,
         label: Container(
@@ -187,6 +66,7 @@ class _JsonDataGridState extends State<JsonDataGrid> {
         ),
       ),
       GridColumn(
+        allowSorting: true,
         columnName: 'stockAddress',
         width: 95,
         label: Container(
@@ -200,6 +80,7 @@ class _JsonDataGridState extends State<JsonDataGrid> {
         ),
       ),
       GridColumn(
+        allowSorting: true,
         columnName: 'deliveryAddress',
         width: 95,
         label: Container(
@@ -213,6 +94,7 @@ class _JsonDataGridState extends State<JsonDataGrid> {
         ),
       ),
       GridColumn(
+        allowSorting: true,
         columnName: 'ownerEmail',
         width: 95,
         label: Container(
@@ -226,6 +108,7 @@ class _JsonDataGridState extends State<JsonDataGrid> {
         ),
       ),
       GridColumn(
+        allowSorting: true,
         columnName: 'ownerPhone',
         width: 95,
         label: Container(
@@ -277,7 +160,7 @@ class _JsonDataGridState extends State<JsonDataGrid> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter DataGrid Sample'),
+        title: Text('Delivery details'),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -286,7 +169,10 @@ class _JsonDataGridState extends State<JsonDataGrid> {
                 builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                    if(snapshot.hasData)
                    return SfDataGrid(
-                          source: jsonDataGridSource, columns: getColumns());
+                          source: jsonDataGridSource, columns: getColumns(),
+                          allowSorting: true,
+                          allowMultiColumnSorting: true,
+                          );
                       return Center(
                           child: CircularProgressIndicator(
                             strokeWidth: 3,

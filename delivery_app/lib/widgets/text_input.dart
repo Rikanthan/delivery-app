@@ -5,12 +5,14 @@ class TextInput extends StatefulWidget {
    required this.hideText,
    required this.hintText,
    required this.iconData,
-   required this.inputAction
+   required this.inputAction,
+   required this.controller
   });
   final IconData iconData;
   final bool hideText;
   final String hintText;
   final TextInputAction inputAction;
+  final TextEditingController controller;
 
   @override
   _TextInputState createState() => _TextInputState();
@@ -27,6 +29,7 @@ class _TextInputState extends State<TextInput> {
         height: 56,
         width: 300,
         child: TextFormField(
+                        controller: widget.controller,
                         textInputAction: widget.inputAction,
                         obscureText: widget.hideText && isHide ,
                         decoration: InputDecoration(

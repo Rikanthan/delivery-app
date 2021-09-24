@@ -1,8 +1,11 @@
 import 'package:delivery_app/page/admin.dart';
 import 'package:delivery_app/page/login.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -15,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: JsonDataGrid(),
+      home: LoginPage(),
     );
   }
 }

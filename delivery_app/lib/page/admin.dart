@@ -17,15 +17,10 @@ class _JsonDataGridState extends State<JsonDataGrid> {
   List<Order> productlist = [];
 
   Future generateOrderList() async {
-    String username = 'user';
-  String password = '1234';
-  String basicAuth =
-      'Basic ' + base64Encode(utf8.encode('$username:$password'));
   //print(basicAuth);
     var response = await http.get(
       Uri.parse(
-        'https://laraexpress.herokuapp.com/order/getAllOrder'),
-          headers: <String, String>{'authorization': basicAuth}
+        'https://laraexpress.herokuapp.com/order/getAllOrder')
         );
     var list = json.decode(response.body).cast<Map<String, dynamic>>();
     productlist =
@@ -158,12 +153,14 @@ class _JsonDataGridState extends State<JsonDataGrid> {
 
   @override
   Widget build(BuildContext context) {
+      double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text('Delivery details'),
       ),
       body: SingleChildScrollView(
         child: Container(
+          height: height,
             child: FutureBuilder(
                 future: generateOrderList(),
                 builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -271,6 +268,10 @@ class _JsonDataGridSource extends DataGridSource {
       Container(
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.all(8.0),
+        color: row.getCells()[6].value.toString().contains('UNCONFIRMED') 
+                ? Colors.orange 
+                : row.getCells()[6].value.toString().contains('DELIVERED') ?
+                Colors.blue : Colors.green,
         child: Text(
          row.getCells()[6].value.toString(),
           overflow: TextOverflow.ellipsis,

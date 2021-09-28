@@ -77,9 +77,7 @@ class _LoginPageState extends State<LoginPage> {
     // Save it to Firestore
     if (fcmToken != null) {
       var tokens = _db
-          .collection('users')
-          .doc(uid)
-          .collection('tokens')
+          .collection('devicetokens')
           .doc(fcmToken);
 
       await tokens.set({
@@ -143,6 +141,10 @@ class _LoginPageState extends State<LoginPage> {
                       onPress:(){
                         try{
                           _saveDeviceToken();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_)=> JsonDataGrid()
+                              ));
                           print("the token is- "+token);
                          //_auth.signInWithEmailAndPassword(email: _usernameController.text, 
                           //password: _passwordController.text);

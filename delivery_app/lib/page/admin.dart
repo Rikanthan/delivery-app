@@ -1,32 +1,23 @@
-import 'dart:io';
-
+import 'package:delivery_app/providers/OrderProvider.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../models/order.dart';
 
-class JsonDataGrid extends StatefulWidget {
+class OrderTableGrid extends StatefulWidget {
   @override
-  _JsonDataGridState createState() => _JsonDataGridState();
+  _OrderTableGridState createState() => _OrderTableGridState();
 }
 
-class _JsonDataGridState extends State<JsonDataGrid> {
-  late _JsonDataGridSource jsonDataGridSource;
-  List<Order> productlist = [];
-
-  Future generateOrderList() async {
-  //print(basicAuth);
-    var response = await http.get(
-      Uri.parse(
-        'https://laraexpress.herokuapp.com/order/getAllOrder')
-        );
-    var list = json.decode(response.body).cast<Map<String, dynamic>>();
-    productlist =
-        await list.map<Order>((json) => Order.fromJson(json)).toList();
-    jsonDataGridSource = _JsonDataGridSource(productlist);
-    return productlist.reversed;
+class _OrderTableGridState extends State<OrderTableGrid> {
+  late _OrderTableGridSource jsonDataGridSource ;
+  late OrderProvider orderProvider;
+ Future<List<Order>>? productlist;
+ @override
+  void initState() {
+    super.initState();
+    orderProvider = Provider.of<OrderProvider>(context, listen: false);
+    productlist = orderProvider.fetchAllOrders();
   }
 
   List<GridColumn> getColumns() {
@@ -141,15 +132,24 @@ class _JsonDataGridState extends State<JsonDataGrid> {
             softWrap: true,
           ),
         ),
+      ),
+      GridColumn(
+        columnName: 'actions',
+        width: 170,
+        label: Container(
+          padding: EdgeInsets.all(8),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Actions',
+            overflow: TextOverflow.clip,
+            softWrap: true,
+          ),
+        ),
       )
     ]);
     return columns;
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -162,15 +162,18 @@ class _JsonDataGridState extends State<JsonDataGrid> {
         child: Container(
           height: height,
             child: FutureBuilder(
-                future: generateOrderList(),
-                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                future: productlist,
+                builder: (BuildContext context, AsyncSnapshot<List<Order>> snapshot) {
                    if(snapshot.hasData)
-                   return SfDataGrid(
-                          source: jsonDataGridSource, columns: getColumns(),
+                   {
+                      return SfDataGrid(
+                          source: jsonDataGridSource, 
+                          columns: getColumns(),
                           allowSorting: true,
                           allowMultiColumnSorting: true,
                           );
-                      return Center(
+                   } 
+                  return Center(
                           child: CircularProgressIndicator(
                             strokeWidth: 3,
                           ),
@@ -183,8 +186,8 @@ class _JsonDataGridState extends State<JsonDataGrid> {
 
 
 
-class _JsonDataGridSource extends DataGridSource {
-  _JsonDataGridSource(this.productlist) {
+class _OrderTableGridSource extends DataGridSource {
+  _OrderTableGridSource(this.productlist) {
     buildDataGridRow();
   }
 
@@ -207,6 +210,7 @@ class _JsonDataGridSource extends DataGridSource {
         DataGridCell<String>(
             columnName: 'status', value: dataGridRow.status),
         DataGridCell<String>(columnName: 'orderdate', value: dataGridRow.orderDate),
+        DataGridCell(columnName: 'actions', value: "")
       ]);
     }).toList(growable: false);
   }
@@ -285,6 +289,53 @@ class _JsonDataGridSource extends DataGridSource {
           overflow: TextOverflow.ellipsis,
         ),
       ),
+      Container(
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            IconButton(
+              onPressed: (){
+
+              }, 
+              icon: Icon(
+                Icons.zoom_in,
+                color: Colors.blue,
+                )
+              ),
+            if(row.getCells()[6].value.toString().contains('UNCONFIRMED'))
+            IconButton(
+              onPressed: (){
+              }, 
+              icon: Icon(
+                Icons.local_shipping,
+                color: Colors.grey,
+                )
+              ),
+            if(
+              row.getCells()[6].value.toString().contains('CONFIRMED') 
+              &&  row.getCells()[6].value.toString().length<10)
+            IconButton(
+              onPressed: (){
+              }, 
+              icon: Icon(
+                Icons.check_circle,
+                color: Colors.blue,
+                )
+              ),
+              if(
+              row.getCells()[6].value.toString().contains('ED'))
+            IconButton(
+              onPressed: (){
+              }, 
+              icon: Icon(
+                Icons.delete,
+                color: Colors.red,
+                )
+              ),
+          ],
+        )
+      )
     ]);
   }
 }

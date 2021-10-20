@@ -7,17 +7,21 @@ import '../models/order.dart';
 class OrderTableGrid extends StatefulWidget {
   @override
   _OrderTableGridState createState() => _OrderTableGridState();
+  
 }
 
 class _OrderTableGridState extends State<OrderTableGrid> {
-  late _OrderTableGridSource jsonDataGridSource ;
+  
   late OrderProvider orderProvider;
- Future<List<Order>>? productlist;
+ Future<List<Order>>? deliveryList;
+ List <Order> productlist = [];
+ //OrderTableGridSource? jsonDataGridSource;
  @override
   void initState() {
     super.initState();
     orderProvider = Provider.of<OrderProvider>(context, listen: false);
-    productlist = orderProvider.fetchAllOrders();
+    deliveryList = orderProvider.fetchAllOrders();
+    deliveryList!.then((value) => productlist);
   }
 
   List<GridColumn> getColumns() {
@@ -161,13 +165,13 @@ class _OrderTableGridState extends State<OrderTableGrid> {
       body: SingleChildScrollView(
         child: Container(
           height: height,
-            child: FutureBuilder(
-                future: productlist,
-                builder: (BuildContext context, AsyncSnapshot<List<Order>> snapshot) {
-                   if(snapshot.hasData)
+            child: FutureBuilder<List<Order>> (
+                builder: (BuildContext context, snapshot) {
+                   if(snapshot.hasData && snapshot.connectionState == ConnectionState.done)
                    {
+                     List<Order>? data = snapshot.data;
                       return SfDataGrid(
-                          source: jsonDataGridSource, 
+                          source: OrderTableGridSource(data!), 
                           columns: getColumns(),
                           allowSorting: true,
                           allowMultiColumnSorting: true,
@@ -178,21 +182,24 @@ class _OrderTableGridState extends State<OrderTableGrid> {
                             strokeWidth: 3,
                           ),
                         );
-                })),
+                },
+                future: deliveryList,
+              )
+          ),
+                
       ),
     );
   }
+  
 }
 
-
-
-class _OrderTableGridSource extends DataGridSource {
-  _OrderTableGridSource(this.productlist) {
+class OrderTableGridSource extends DataGridSource {
+  OrderTableGridSource(this.productlist) {
     buildDataGridRow();
   }
 
   List<DataGridRow> dataGridRows = [];
-  List<Order> productlist = [];
+ final List<Order> productlist;
 
   void buildDataGridRow() {
     dataGridRows = productlist.map<DataGridRow>((dataGridRow) {
@@ -338,4 +345,18 @@ class _OrderTableGridSource extends DataGridSource {
       )
     ]);
   }
+
+
+  @override
+  // TODO: implement isRowCountApproximate
+  bool get isRowCountApproximate => throw UnimplementedError();
+
+  @override
+  // TODO: implement rowCount
+  int get rowCount => throw UnimplementedError();
+
+  @override
+  // TODO: implement selectedRowCount
+  int get selectedRowCount => throw UnimplementedError();
 }
+

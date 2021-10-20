@@ -10,7 +10,7 @@ class OrderProvider with ChangeNotifier{
     await OrderService().getAllOrders().then((res){
       if(res.statusCode == 200)
       {
-        List<dynamic> result = json.decode(res.body);
+        List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();
         List<Order>  order = result.map((dynamic e)=> Order.fromJson(e)).toList();
         _orders = order.reversed.toList();
       }
@@ -22,7 +22,7 @@ class OrderProvider with ChangeNotifier{
     await OrderService().changeToDelivered(order).then((res){
       if(res.statusCode == 200)
       {
-        List<dynamic> result = json.decode(res.body);
+        List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();;
         List<Order>  order = result.map((dynamic e)=> Order.fromJson(e)).toList();
         _orders = order.reversed.toList();
       }
@@ -35,7 +35,7 @@ class OrderProvider with ChangeNotifier{
     await OrderService().changeToConfirm(order).then((res){
       if(res.statusCode == 200)
       {
-        List<dynamic> result = json.decode(res.body);
+        List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();;
         List<Order>  order = result.map((dynamic e)=> Order.fromJson(e)).toList();
         _orders = order.reversed.toList();
       }
@@ -48,7 +48,7 @@ class OrderProvider with ChangeNotifier{
     await OrderService().deleteOrder(order).then((res){
       if(res.statusCode == 200)
       {
-        List<dynamic> result = json.decode(res.body);
+        List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();;
         List<Order>  order = result.map((dynamic e)=> Order.fromJson(e)).toList();
         _orders = order.reversed.toList();
       }

@@ -8,7 +8,8 @@ class Order {
         ownerEmail: json['ownerEmail'],
         ownerPhone: json['ownerPhoneNumber'],
         status: json['status'],
-        orderDate: json['orderDate']
+        orderDate: json['orderDate'],
+        description: json['description']
     );    
   }
 //https://laraexpress.herokuapp.com/order/getAllOrder
@@ -21,7 +22,8 @@ class Order {
       this.ownerEmail,
       this.ownerPhone,
       this.status,
-      this.orderDate});
+      this.orderDate,
+      this.description});
   int? orderID;
   String? ownerPhone;
   String? ownerName;
@@ -30,4 +32,5 @@ class Order {
   String? ownerEmail;
   String? status;
   String? orderDate;
+  String? description;
 }

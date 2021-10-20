@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
@@ -10,9 +10,18 @@ import '../models/order.dart';
 class JsonDataGrid extends StatefulWidget {
   @override
   _JsonDataGridState createState() => _JsonDataGridState();
+
 }
 
 class _JsonDataGridState extends State<JsonDataGrid> {
+    @override
+void initState(){
+  super.initState();
+  SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+  ]);
+}
   late _JsonDataGridSource jsonDataGridSource;
   List<Order> productlist = [];
 
@@ -25,8 +34,9 @@ class _JsonDataGridState extends State<JsonDataGrid> {
     var list = json.decode(response.body).cast<Map<String, dynamic>>();
     productlist =
         await list.map<Order>((json) => Order.fromJson(json)).toList();
+        productlist = productlist.reversed.toList();
     jsonDataGridSource = _JsonDataGridSource(productlist);
-    return productlist.reversed;
+    return productlist;
   }
 
   List<GridColumn> getColumns() {
@@ -141,15 +151,25 @@ class _JsonDataGridState extends State<JsonDataGrid> {
             softWrap: true,
           ),
         ),
+      ),
+      GridColumn(
+        columnName: 'description',
+        width: 100,
+        label: Container(
+          padding: EdgeInsets.all(8),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            'Description',
+            overflow: TextOverflow.clip,
+            softWrap: true,
+          ),
+        ),
       )
     ]);
     return columns;
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -207,6 +227,7 @@ class _JsonDataGridSource extends DataGridSource {
         DataGridCell<String>(
             columnName: 'status', value: dataGridRow.status),
         DataGridCell<String>(columnName: 'orderdate', value: dataGridRow.orderDate),
+         DataGridCell<String>(columnName: 'description', value: dataGridRow.description),
       ]);
     }).toList(growable: false);
   }
@@ -282,6 +303,14 @@ class _JsonDataGridSource extends DataGridSource {
         padding: EdgeInsets.all(8.0),
         child: Text(
           row.getCells()[7].value.toString(),
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+       Container(
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.all(8.0),
+        child: Text(
+          row.getCells()[8].value.toString(),
           overflow: TextOverflow.ellipsis,
         ),
       ),

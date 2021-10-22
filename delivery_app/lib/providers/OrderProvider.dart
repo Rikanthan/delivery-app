@@ -20,12 +20,19 @@ class OrderProvider with ChangeNotifier{
 
   Future<List<Order>> changeStatusToDelivered(Order order) async {
     await OrderService().changeToDelivered(order).then((res){
-      if(res.statusCode == 200)
-      {
-        List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();;
-        List<Order>  order = result.map((dynamic e)=> Order.fromJson(e)).toList();
-        _orders = order.reversed.toList();
+      try{
+          if(res.statusCode == 200)
+        {
+          List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();
+          List<Order>  order = result.map((dynamic e)=> Order.fromJson(e)).toList();
+          _orders = order.reversed.toList();
+        }
       }
+      catch(e)
+      {
+        print(e);
+      }
+      
     });
     notifyListeners();
     return _orders;
@@ -33,12 +40,19 @@ class OrderProvider with ChangeNotifier{
 
   Future<List<Order>> changeStatusToConfirm(Order order) async {
     await OrderService().changeToConfirm(order).then((res){
-      if(res.statusCode == 200)
-      {
-        List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();;
-        List<Order>  order = result.map((dynamic e)=> Order.fromJson(e)).toList();
-        _orders = order.reversed.toList();
+      try{
+          if(res.statusCode == 200)
+        {
+          List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();
+          List<Order>  order = result.map((dynamic e)=> Order.fromJson(e)).toList();
+          _orders = order.reversed.toList();
+        }
       }
+      catch(e)
+      {
+        print(e);
+      }
+     
     });
     notifyListeners();
     return _orders;
@@ -46,12 +60,19 @@ class OrderProvider with ChangeNotifier{
 
   Future<List<Order>> deleteSpecificOrder(Order order) async {
     await OrderService().deleteOrder(order).then((res){
-      if(res.statusCode == 200)
+      try{
+          if(res.statusCode == 200)
       {
-        List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();;
+        List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();
         List<Order>  order = result.map((dynamic e)=> Order.fromJson(e)).toList();
         _orders = order.reversed.toList();
       }
+    }
+    catch(e)
+    {
+      print(e);
+    }
+      
     });
     notifyListeners();
     return _orders;

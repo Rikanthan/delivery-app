@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:delivery_app/models/order.dart';
 import 'package:http/http.dart' as http;
 import '/global/global.dart';
@@ -12,24 +14,27 @@ class OrderService
     );
   }
 
-  //https://laraexpress.herokuapp.com/order/deliveredOrder
-    //https://laraexpress.herokuapp.com/order/setConfirm
-    //https://laraexpress.herokuapp.com/order/deleteOrder
 
   Future<http.Response> changeToConfirm(Order order)
   {
      return http.post(
-      Uri.parse(url + '/setConfirm'),
-      body: jsonEncode(<String, String>{
-        "orderId": order.orderID.toString(),
-        "ownerName": order.ownerName.toString(),
-        "stockAddress": order.stockAddress.toString(),
-        "deliveryAddress": order.deliveryAddress.toString(),
-        "ownerEmail": order.ownerEmail.toString(),
-        "ownerPhoneNumber": order.ownerPhone.toString(),
-        "status": order.ownerName.toString(),
-        "orderDate": order.orderDate.toString()
-      }),
+      Uri.parse(url+'/setConfirm'),
+     headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Access-Control-Allow-Origin': '*',
+        'Accept': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'orderId': order.orderID.toString(),
+        'ownerName': order.ownerName.toString(),
+        'stockAddress': order.stockAddress.toString(),
+        'deliveryAddress': order.deliveryAddress.toString(),
+        'ownerEmail': order.ownerEmail.toString(),
+        'ownerPhoneNumber': order.ownerPhone.toString(),
+        'status': order.status.toString(),
+        'orderDate': order.orderDate.toString(),
+        'description' : order.description.toString()
+      })
     );
   }
 
@@ -37,16 +42,23 @@ class OrderService
   {
      return http.post(
       Uri.parse(url + '/deliveredOrder'),
-      body: jsonEncode(<String, String>{
-        "orderId": order.orderID.toString(),
-        "ownerName": order.ownerName.toString(),
-        "stockAddress": order.stockAddress.toString(),
-        "deliveryAddress": order.deliveryAddress.toString(),
-        "ownerEmail": order.ownerEmail.toString(),
-        "ownerPhoneNumber": order.ownerPhone.toString(),
-        "status": order.ownerName.toString(),
-        "orderDate": order.orderDate.toString()
+       headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Access-Control-Allow-Origin': '*',
+        'Accept': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        'orderId': order.orderID.toString(),
+        'ownerName': order.ownerName.toString(),
+        'stockAddress': order.stockAddress.toString(),
+        'deliveryAddress': order.deliveryAddress.toString(),
+        'ownerEmail': order.ownerEmail.toString(),
+        'ownerPhoneNumber': order.ownerPhone.toString(),
+        'status': order.status.toString(),
+        'orderDate': order.orderDate.toString(),
+        'description' : order.description.toString()
       }),
+     
     ); 
   }
 
@@ -54,16 +66,21 @@ class OrderService
   {
      return http.post(
       Uri.parse(url + '/deleteOrder'),
-      body: jsonEncode(<String, String>{
-        "orderId": order.orderID.toString(),
-        "ownerName": order.ownerName.toString(),
-        "stockAddress": order.stockAddress.toString(),
-        "deliveryAddress": order.deliveryAddress.toString(),
-        "ownerEmail": order.ownerEmail.toString(),
-        "ownerPhoneNumber": order.ownerPhone.toString(),
-        "status": order.ownerName.toString(),
-        "orderDate": order.orderDate.toString()
-      }),
+      headers: {
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.allowHeader: '*',
+        },
+      body: jsonEncode(<String, dynamic>{
+        'orderId': order.orderID.toString(),
+        'ownerName': order.ownerName.toString(),
+        'stockAddress': order.stockAddress.toString(),
+        'deliveryAddress': order.deliveryAddress.toString(),
+        'ownerEmail': order.ownerEmail.toString(),
+        'ownerPhoneNumber': order.ownerPhone.toString(),
+        'status': order.status.toString(),
+        'orderDate': order.orderDate.toString(),
+        'description' : order.description.toString()
+      })
     ); 
   }
   

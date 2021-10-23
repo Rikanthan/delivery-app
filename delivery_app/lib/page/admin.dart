@@ -180,6 +180,48 @@ class _OrderTableGridState extends State<OrderTableGrid> {
       appBar: AppBar(
         title: Text('Delivery details'),
       ),
+      drawer: Drawer(
+        child:  ListView(
+    // Important: Remove any padding from the ListView.
+    padding: EdgeInsets.zero,
+    children: [
+      const DrawerHeader(
+        decoration: BoxDecoration(
+          color: Colors.blue,
+        ),
+        child: Text('Services'),
+      ),
+      ListTile(
+        title: const Text('Delivery Service'),
+        onTap: () {
+          // Update the state of the app.
+          // ...
+        },
+      ),
+      ListTile(
+        title: const Text('Removal Service'),
+        onTap: () {
+          // Update the state of the app.
+          // ...
+        },
+      ),
+       ListTile(
+        title: const Text('Cleaning Service'),
+        onTap: () {
+          // Update the state of the app.
+          // ...
+        },
+      ),
+       ListTile(
+        title: const Text('Transport Service'),
+        onTap: () {
+          // Update the state of the app.
+          // ...
+        },
+      ),
+    ],
+  ),
+        ),
       body: SingleChildScrollView(
         child: Container(
           height: height - 83,

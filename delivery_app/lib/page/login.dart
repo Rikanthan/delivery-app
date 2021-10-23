@@ -141,10 +141,13 @@ class _LoginPageState extends State<LoginPage> {
                       onPress:(){
                         try{
                           _saveDeviceToken();
-                          Navigator.of(context).push(
+                          WidgetsBinding.instance!.addPostFrameCallback((_) 
+                          { 
+                            Navigator.of(context).pushReplacement(
                             MaterialPageRoute(
                               builder: (_)=> OrderTableGrid()
                               ));
+                          });
                           print("the token is- "+token);
                          //_auth.signInWithEmailAndPassword(email: _usernameController.text, 
                           //password: _passwordController.text);

@@ -1,4 +1,6 @@
 import 'package:delivery_app/providers/OrderProvider.dart';
+import 'package:delivery_app/widgets/alertbox.dart';
+import 'package:delivery_app/widgets/showAll.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -12,7 +14,7 @@ class OrderTableGrid extends StatefulWidget {
 }
 
 class _OrderTableGridState extends State<OrderTableGrid> {
-  
+  final DataGridController _dataGridController = DataGridController();
   late OrderProvider orderProvider;
  Future<List<Order>>? deliveryList;
  @override
@@ -165,7 +167,8 @@ class _OrderTableGridState extends State<OrderTableGrid> {
           ),
         ),
       )
-    ]);
+    ]
+    );
     return columns;
   }
 
@@ -186,11 +189,16 @@ class _OrderTableGridState extends State<OrderTableGrid> {
                    {
                      List<Order>? data = snapshot.data;
                       return SfDataGrid(
-                          source: OrderTableGridSource(context,data!), 
+                          source: OrderTableGridSource(
+                            context,
+                            data!
+                            ), 
                           columns: getColumns(),
                           allowSorting: true,
                           allowEditing: true,
                           allowMultiColumnSorting: true,
+                          selectionMode: SelectionMode.single,
+                          controller: _dataGridController,
                           );
                    } 
                   return Center(
@@ -215,12 +223,26 @@ class OrderTableGridSource extends DataGridSource {
   }
 
   List<DataGridRow> dataGridRows = [];
+  List<int> rowIndex = [];
  final List<Order> productlist;
  final BuildContext context;
-
   void buildDataGridRow() {
+   int getIndex(int? id)
+    {
+      int i;
+      for(i= 0; i<productlist.length ;i++)
+      {
+        Order order = productlist[i];
+        if(id == order.orderID)
+        {
+          break;  
+        }
+      }
+      return i;
+    }
     dataGridRows = productlist.map<DataGridRow>((dataGridRow) {
-      return DataGridRow(cells: [
+      return DataGridRow(
+        cells: [
         DataGridCell<int>(columnName: 'orderID', value: dataGridRow.orderID),
         DataGridCell<String>(
             columnName: 'ownerName', value: dataGridRow.ownerName),
@@ -235,7 +257,7 @@ class OrderTableGridSource extends DataGridSource {
             columnName: 'status', value: dataGridRow.status),
         DataGridCell<String>(columnName: 'orderdate', value: dataGridRow.orderDate),
         DataGridCell<String>(columnName: 'description', value: dataGridRow.description),
-        DataGridCell(columnName: 'actions', value: "")
+        DataGridCell<int>(columnName: 'actions', value: getIndex(dataGridRow.orderID))
       ]);
     }).toList(growable: false);
   }
@@ -329,7 +351,12 @@ class OrderTableGridSource extends DataGridSource {
           children: [
             IconButton(
               onPressed: (){
-                 
+                showDialog(
+                  context: context,
+                   builder: (_) => ShowAll(
+                     order: productlist[row.getCells()[9].value]
+                     )
+                   );
               }, 
               icon: Icon(
                 Icons.zoom_in,
@@ -339,7 +366,18 @@ class OrderTableGridSource extends DataGridSource {
             if(row.getCells()[6].value.toString().contains('UNCONFIRMED'))
             IconButton(
               onPressed: (){
-                 Provider.of<OrderProvider>(context,listen: false).changeStatusToConfirm(productlist[0]);
+                showDialog(
+                  context: context,
+                   builder: (_) => AlertBox(
+                     header: 'confirmed', 
+                      onpress: (){
+                       Provider.of<OrderProvider>(context,listen: false)
+                       .changeStatusToConfirm(productlist[row.getCells()[9].value]);
+                       print(row.getCells()[9].value);
+                       Navigator.of(context).pop();
+                      }
+                     )
+                   ); 
               }, 
               icon: Icon(
                 Icons.local_shipping,
@@ -351,7 +389,17 @@ class OrderTableGridSource extends DataGridSource {
               &&  row.getCells()[6].value.toString().length<10)
             IconButton(
               onPressed: () {
-               Provider.of<OrderProvider>(context,listen: false).changeStatusToDelivered(productlist[0]);
+                showDialog(
+                  context: context,
+                   builder: (_) => AlertBox(
+                     header: 'delivered', 
+                     onpress: (){
+                       Provider.of<OrderProvider>(context,listen: false)
+                       .changeStatusToDelivered(productlist[0]);
+                       Navigator.of(context).pop();
+                      }
+                     )
+                   );
               }, 
               icon: Icon(
                 Icons.check_circle,
@@ -362,7 +410,17 @@ class OrderTableGridSource extends DataGridSource {
               row.getCells()[6].value.toString().contains('ED'))
             IconButton(
               onPressed: () {
-                Provider.of<OrderProvider>(context,listen: false).deleteSpecificOrder(productlist[0]);
+                showDialog(
+                  context: context,
+                   builder: (_) => AlertBox(
+                     header: 'deleted', 
+                     onpress: (){
+                       Provider.of<OrderProvider>(context,listen: false)
+                       .deleteSpecificOrder(productlist[0]);
+                       Navigator.of(context).pop();
+                      }
+                     )
+                   );
               }, 
               icon: Icon(
                 Icons.delete,

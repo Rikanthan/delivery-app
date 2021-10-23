@@ -6,6 +6,8 @@ import '/services/OrderServices.dart';
 class OrderProvider with ChangeNotifier{
   List<Order> _orders = [];
 
+  List<Order> get deliveryOrders => _orders;
+
   Future<List<Order>> fetchAllOrders() async {
     await OrderService().getAllOrders().then((res){
       if(res.statusCode == 200)
@@ -26,6 +28,7 @@ class OrderProvider with ChangeNotifier{
           List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();
           List<Order>  order = result.map((dynamic e)=> Order.fromJson(e)).toList();
           _orders = order.reversed.toList();
+          notifyListeners();
         }
       }
       catch(e)
@@ -33,8 +36,7 @@ class OrderProvider with ChangeNotifier{
         print(e);
       }
       
-    });
-    notifyListeners();
+    });  
     return _orders;
   }
 
@@ -46,15 +48,15 @@ class OrderProvider with ChangeNotifier{
           List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();
           List<Order>  order = result.map((dynamic e)=> Order.fromJson(e)).toList();
           _orders = order.reversed.toList();
+          notifyListeners();
         }
       }
       catch(e)
       {
         print(e);
       }
-     
     });
-    notifyListeners();
+    
     return _orders;
   }
 
@@ -66,16 +68,14 @@ class OrderProvider with ChangeNotifier{
         List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();
         List<Order>  order = result.map((dynamic e)=> Order.fromJson(e)).toList();
         _orders = order.reversed.toList();
+        notifyListeners();
       }
     }
     catch(e)
     {
       print(e);
     }
-      
     });
-    notifyListeners();
     return _orders;
   }
-
 }

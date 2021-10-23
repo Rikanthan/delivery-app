@@ -182,7 +182,7 @@ class _OrderTableGridState extends State<OrderTableGrid> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: height,
+          height: height - 83,
             child: FutureBuilder<List<Order>> (
                 builder: (BuildContext context, snapshot) {
                    if(snapshot.hasData && snapshot.connectionState == ConnectionState.done)
@@ -395,7 +395,7 @@ class OrderTableGridSource extends DataGridSource {
                      header: 'delivered', 
                      onpress: (){
                        Provider.of<OrderProvider>(context,listen: false)
-                       .changeStatusToDelivered(productlist[0]);
+                       .changeStatusToDelivered(productlist[row.getCells()[9].value]);
                        Navigator.of(context).pop();
                       }
                      )
@@ -416,7 +416,7 @@ class OrderTableGridSource extends DataGridSource {
                      header: 'deleted', 
                      onpress: (){
                        Provider.of<OrderProvider>(context,listen: false)
-                       .deleteSpecificOrder(productlist[0]);
+                       .deleteSpecificOrder(productlist[row.getCells()[9].value]);
                        Navigator.of(context).pop();
                       }
                      )

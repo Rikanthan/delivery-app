@@ -20,12 +20,24 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
   FlutterLocalNotificationsPlugin();
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  try{
     await Firebase.initializeApp();
     print('Background msg: ${message.messageId}');
   }
+    on FirebaseException catch(e){
+      rethrow;
+    }
+  }
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  try
+  {
+    await Firebase.initializeApp();
+  }
+  catch(e)
+  {
+    rethrow;
+  }
    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   await flutterLocalNotificationsPlugin

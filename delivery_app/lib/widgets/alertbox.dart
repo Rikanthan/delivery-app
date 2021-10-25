@@ -14,7 +14,7 @@ class AlertBox extends StatelessWidget {
           onPressed:
             onpress,
            child: Text(
-             "ok",
+             "Ok",
              style: TextStyle(
                color: Colors.green
              ),
@@ -25,7 +25,7 @@ class AlertBox extends StatelessWidget {
              Navigator.pop(context);
           },
            child: Text(
-             "cancel",
+             "Cancel",
              style: TextStyle(
                color: Colors.red
                 ),

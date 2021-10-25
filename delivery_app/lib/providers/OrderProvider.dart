@@ -20,35 +20,28 @@ class OrderProvider with ChangeNotifier{
     return _orders;
   }
 
-  Future<List<Order>> changeStatusToDelivered(Order order) async {
+  Future changeStatusToDelivered(Order order) async {
     await OrderService().changeToDelivered(order).then((res){
       try{
           if(res.statusCode == 200)
         {
-          List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();
-          List<Order>  order = result.map((dynamic e)=> Order.fromJson(e)).toList();
-          _orders = order.reversed.toList();
+          print("success");
           notifyListeners();
         }
       }
       catch(e)
       {
         print(e);
-      }
-      
-    });  
-    return _orders;
+      } 
+    });   
   }
 
-  Future<List<Order>> changeStatusToConfirm(Order order) async {
+  Future changeStatusToConfirm(Order order) async {
     await OrderService().changeToConfirm(order).then((res){
       try{
           if(res.statusCode == 200)
         {
-          List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();
-          List<Order>  order = result.map((dynamic e)=> Order.fromJson(e)).toList();
-          _orders = order.reversed.toList();
-          notifyListeners();
+          print("success");
         }
       }
       catch(e)
@@ -56,19 +49,15 @@ class OrderProvider with ChangeNotifier{
         print(e);
       }
     });
-    
-    return _orders;
+    notifyListeners();
   }
 
-  Future<List<Order>> deleteSpecificOrder(Order order) async {
+  Future  deleteSpecificOrder(Order order) async {
     await OrderService().deleteOrder(order).then((res){
       try{
           if(res.statusCode == 200)
       {
-        List<dynamic> result = json.decode(res.body).cast<Map<String,dynamic>>();
-        List<Order>  order = result.map((dynamic e)=> Order.fromJson(e)).toList();
-        _orders = order.reversed.toList();
-        notifyListeners();
+        print('success');
       }
     }
     catch(e)
@@ -76,6 +65,6 @@ class OrderProvider with ChangeNotifier{
       print(e);
     }
     });
-    return _orders;
+    notifyListeners();
   }
 }

@@ -26,7 +26,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -68,7 +67,6 @@ class _LoginPageState extends State<LoginPage> {
     
       _saveDeviceToken() async {
     // Get the current user
-    String uid = 'jeffd23';
     // FirebaseUser user = await _auth.currentUser();
 
     // Get the token for this device

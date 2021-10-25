@@ -1,15 +1,15 @@
 class Order {
   factory Order.fromJson(Map<String, dynamic> json) {
     return Order(
-        orderID: json['orderId'],
-        ownerName: json['ownerName'],
-        stockAddress: json['stockAddress'],
-        deliveryAddress: json['deliveryAddress'],
-        ownerEmail: json['ownerEmail'],
-        ownerPhone: json['ownerPhoneNumber'],
-        status: json['status'],
-        orderDate: json['orderDate'],
-        description: json['description']
+        orderID: json['orderId'] as int,
+        ownerName: json['ownerName'] as String,
+        stockAddress: json['stockAddress'] as String,
+        deliveryAddress: json['deliveryAddress'] as String,
+        ownerEmail: json['ownerEmail'] as String ,
+        ownerPhone: json['ownerPhoneNumber'] as String,
+        status: json['status'] as String,
+        orderDate: json['orderDate'] as String,
+        description: json['description'] as String
     );    
   }
 //https://laraexpress.herokuapp.com/order/getAllOrder

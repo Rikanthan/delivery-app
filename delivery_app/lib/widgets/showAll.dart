@@ -26,7 +26,7 @@ class ShowAll extends StatelessWidget {
             Navigator.pop(context);
           },
            child: Text(
-             "ok",
+             "Ok",
              style: TextStyle(
                color: Colors.green
              ),

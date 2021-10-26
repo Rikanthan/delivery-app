@@ -1,6 +1,6 @@
-class Delivery {
-  factory Delivery.fromJson(Map<String, dynamic> json) {
-    return Delivery(
+class Removal {
+  factory Removal.fromJson(Map<String, dynamic> json) {
+    return Removal(
         orderID: json['orderId'] as int,
         ownerName: json['ownerName'] as String,
         stockAddress: json['stockAddress'] as String,
@@ -9,10 +9,11 @@ class Delivery {
         ownerPhone: json['ownerPhoneNumber'] as String,
         status: json['status'] as String,
         orderDate: json['orderDate'] as String,
+        serviceType: json['serviceType'] as String,
         description: json['description'] as String
     );    
   }
-  Delivery(
+  Removal(
       {
       this.orderID,
       this.ownerName,
@@ -22,6 +23,7 @@ class Delivery {
       this.ownerPhone,
       this.status,
       this.orderDate,
+      this.serviceType,
       this.description});
   int? orderID;
   String? ownerPhone;
@@ -31,5 +33,6 @@ class Delivery {
   String? ownerEmail;
   String? status;
   String? orderDate;
+  String? serviceType;
   String? description;
 }

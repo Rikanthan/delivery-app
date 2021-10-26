@@ -1,24 +1,23 @@
 import 'dart:io';
-
 import 'package:delivery_app/models/order.dart';
 import 'package:http/http.dart' as http;
 import '/global/global.dart';
 import 'dart:convert';
 
-class OrderService
+class DeliveryService
 {
-  Future<http.Response> getAllOrders()
+  Future<http.Response> getAllDeliverys()
   {
      return http.get(
-        Uri.parse(url+'/getAllOrder')   
+        Uri.parse(url+'/order/getAllOrder')   
     );
   }
 
 
-  Future<http.Response> changeToConfirm(Order order)
+  Future<http.Response> changeToConfirm(Delivery order)
   {
      return http.post(
-      Uri.parse(url+'/setConfirm'),
+      Uri.parse(url+'/order/setConfirm'),
      headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
@@ -38,10 +37,10 @@ class OrderService
     );
   }
 
-  Future<http.Response> changeToDelivered(Order order)
+  Future<http.Response> changeToDelivered(Delivery order)
   {
      return http.post(
-      Uri.parse(url + '/deliveredOrder'),
+      Uri.parse(url + '/order/deliveredOrder'),
        headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
@@ -62,10 +61,10 @@ class OrderService
     ); 
   }
 
-   Future<http.Response> deleteOrder(Order order)
+   Future<http.Response> deleteDelivery(Delivery order)
   {
      return http.post(
-      Uri.parse(url + '/deleteOrder'),
+      Uri.parse(url + '/order/deleteOrder'),
       headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.allowHeader: '*',

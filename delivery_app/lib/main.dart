@@ -1,6 +1,7 @@
 import 'package:delivery_app/page/admin.dart';
 import 'package:delivery_app/page/login.dart';
-import 'package:delivery_app/providers/OrderProvider.dart';
+import 'package:delivery_app/providers/DeliveryProvider.dart';
+import 'package:delivery_app/providers/RemovalProvider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<OrderProvider>.value(value: OrderProvider())
+        ChangeNotifierProvider<DeliveryProvider>.value(value: DeliveryProvider()),
+        ChangeNotifierProvider<RemovalProvider>.value(value: RemovalProvider())
     ],
     child:MaterialApp(
       debugShowCheckedModeBanner: false,

@@ -1,146 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-List<GridColumn> getColumns() {
+List<String> deliveryColumnName = ["ownerName","stockAddress","deliveryAddress",
+"ownerEmail","ownerPhoneNumber","status","orderDate","description","action"];
+
+List<String> deliveryHeaders = ["Name","Stock Address","Delivery Address","Email",
+"Phone No","Status","Order Date","Description","Action"];
+
+List<String> removalColumnName = ["ownerName","stockAddress","deliveryAddress",
+"ownerEmail","ownerPhoneNumber","serviceType","status","orderDate","description","action"];
+
+List<String> removalHeaders = ["Name","Stock Address","Delivery Address","Email",
+"Phone No","Removal Type","status","Order Date","Description","Action"];
+
+List<String> transportColumnName = ["name","email","phone","address",
+"description","frightTo","frightfrom","orderDate","status","action"];
+
+List<String> transportHeaders = ["Name","Email","Phone","Address",
+"Description","Fright To","Freight From","Order Date","Status","Action"];
+
+List<String> cleaningColumnName = ["name","email","phone","address",
+"description","orderDate","status","action"];
+
+List<String> cleaningHeaders = ["Name","Email","Phone","Address",
+"Description","Order Date","Status","Action"];
+
+List<GridColumn> getColumns(List<String> columnName, List<String> headers) {
     List<GridColumn> columns;
     columns = ([
       GridColumn(
         allowSorting: true,
-        columnName: 'orderID',
+        columnName: 'orderId',
         width: 70,
         label: Container(
           padding: EdgeInsets.all(8),
           alignment: Alignment.centerLeft,
           child: Text(
-            'Order ID',
+            'Delivery ID',
             overflow: TextOverflow.clip,
             softWrap: true,
           ),
         ),
       ),
-      GridColumn(
+      for(int i = 0 ; i < columnName.length ; i++) 
+          GridColumn(
         allowSorting: true,
-        columnName: 'ownerName',
-        width: 65,
+        columnName: columnName[i],
+        width: i == 0 ? 65 : i == columnName.length - 1 ? 170 : 100,
         label: Container(
           padding: EdgeInsets.all(8),
           alignment: Alignment.centerLeft,
           child: Text(
-            'Name',
+            headers[i],
             overflow: TextOverflow.clip,
             softWrap: true,
           ),
         ),
       ),
-      GridColumn(
-        allowSorting: true,
-        columnName: 'stockAddress',
-        width: 95,
-        label: Container(
-          padding: EdgeInsets.all(8),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Stock Address',
-            overflow: TextOverflow.clip,
-            softWrap: true,
-          ),
-        ),
-      ),
-      GridColumn(
-        allowSorting: true,
-        columnName: 'deliveryAddress',
-        width: 95,
-        label: Container(
-          padding: EdgeInsets.all(8),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Delivery Address',
-            overflow: TextOverflow.clip,
-            softWrap: true,
-          ),
-        ),
-      ),
-      GridColumn(
-        allowSorting: true,
-        columnName: 'ownerEmail',
-        width: 95,
-        label: Container(
-          padding: EdgeInsets.all(8),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Owner Email',
-            overflow: TextOverflow.clip,
-            softWrap: true,
-          ),
-        ),
-      ),
-      GridColumn(
-        allowSorting: true,
-        columnName: 'ownerPhone',
-        width: 95,
-        label: Container(
-          padding: EdgeInsets.all(8),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Phone No',
-            overflow: TextOverflow.clip,
-            softWrap: true,
-          ),
-        ),
-      ),
-      GridColumn(
-        columnName: 'status',
-        width: 95,
-        label: Container(
-          padding: EdgeInsets.all(8),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Status',
-            overflow: TextOverflow.clip,
-            softWrap: true,
-          ),
-        ),
-      ),
-      GridColumn(
-        columnName: 'orderDate',
-        width: 100,
-        label: Container(
-          padding: EdgeInsets.all(8),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Order Date',
-            overflow: TextOverflow.clip,
-            softWrap: true,
-          ),
-        ),
-      ),
-      GridColumn(
-        columnName: 'description',
-        width: 100,
-        label: Container(
-          padding: EdgeInsets.all(8),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Description',
-            overflow: TextOverflow.clip,
-            softWrap: true,
-          ),
-        ),
-      ),
-      GridColumn(
-        columnName: 'actions',
-        width: 170,
-        label: Container(
-          padding: EdgeInsets.all(8),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Actions',
-            overflow: TextOverflow.clip,
-            softWrap: true,
-          ),
-        ),
-      )
     ]
     );
     return columns;
+  }
+
+  enum ServicesClicked
+  {
+    delivery,
+    removal,
+    transport,
+    cleaning    
   }

@@ -8,10 +8,10 @@ List<String> deliveryHeaders = ["Name","Stock Address","Delivery Address","Email
 "Phone No","Status","Order Date","Description","Action"];
 
 List<String> removalColumnName = ["ownerName","stockAddress","deliveryAddress",
-"ownerEmail","ownerPhoneNumber","serviceType","status","orderDate","description","action"];
+"ownerEmail","ownerPhoneNumber","serviceType","status","orderDate","description"];
 
 List<String> removalHeaders = ["Name","Stock Address","Delivery Address","Email",
-"Phone No","Removal Type","status","Order Date","Description","Action"];
+"Phone No","Removal Type","status","Order Date","Description"];
 
 List<String> transportColumnName = ["name","email","phone","address",
 "description","frightTo","frightfrom","orderDate","status","action"];

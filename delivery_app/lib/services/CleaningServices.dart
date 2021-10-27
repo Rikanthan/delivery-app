@@ -9,7 +9,7 @@ class CleaningService
   Future<http.Response> getAllCleanings()
   {
      return http.get(
-        Uri.parse(url+'/getAllCleaning')   
+        Uri.parse(url+'/cleaning/getAllCleaning')   
     );
   }
 
@@ -17,7 +17,7 @@ class CleaningService
   Future<http.Response> changeToConfirm(Cleaning order)
   {
      return http.post(
-      Uri.parse(url+'/setConfirm'),
+      Uri.parse(url+'/cleaning/setConfirm'),
      headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
@@ -39,7 +39,7 @@ class CleaningService
   Future<http.Response> changeToDelivered(Cleaning order)
   {
      return http.post(
-      Uri.parse(url + '/deliveredCleaning'),
+      Uri.parse(url + '/cleaning/deliveredCleaning'),
        headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
@@ -62,7 +62,7 @@ class CleaningService
    Future<http.Response> deleteCleaning(Cleaning order)
   {
      return http.post(
-      Uri.parse(url + '/deleteCleaning'),
+      Uri.parse(url + '/cleaning/deleteCleaning'),
       headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.allowHeader: '*',

@@ -1,12 +1,12 @@
 import 'package:delivery_app/models/removal.dart';
-import 'package:delivery_app/page/admin.dart';
-import 'package:delivery_app/widgets/alertbox.dart';
-import 'package:delivery_app/widgets/showRemoval.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class RemovalTableGridSource extends DataGridSource {
-  RemovalTableGridSource(this.context,this.productlist) {
+  RemovalTableGridSource(
+    this.context,
+    this.productlist
+    ) {
     buildDataGridRow();
   }
 
@@ -15,19 +15,6 @@ class RemovalTableGridSource extends DataGridSource {
  final List<Removal> productlist;
  final BuildContext context;
   void buildDataGridRow() {
-   int getIndex(int? id)
-    {
-      int i;
-      for(i= 0; i<productlist.length ;i++)
-      {
-        Removal order = productlist[i];
-        if(id == order.orderID)
-        {
-          break;  
-        }
-      }
-      return i;
-    }
     dataGridRows = productlist.map<DataGridRow>((dataGridRow) {
       return DataGridRow(
         cells: [
@@ -46,8 +33,6 @@ class RemovalTableGridSource extends DataGridSource {
         DataGridCell<String>(
             columnName: 'status', value: dataGridRow.status),
         DataGridCell<String>(columnName: 'orderdate', value: dataGridRow.orderDate),
-        
-        DataGridCell<int>(columnName: 'actions', value: getIndex(dataGridRow.orderID))
       ]);
     }).toList(growable: false);
   }
@@ -94,11 +79,7 @@ class RemovalTableGridSource extends DataGridSource {
                   ? Colors.orangeAccent :
                   row.getCells()[6].value.toString().contains("Office")
                   ? Colors.blue : 
-                  Colors.pink,
-              //  decoration: BoxDecoration(
-              //    border: Border.all(color: Colors.white),
-              //    borderRadius: BorderRadius.circular(5.0)
-              //    ),   
+                  Colors.pink,  
         ),
       ),
       Padding(
@@ -132,96 +113,6 @@ class RemovalTableGridSource extends DataGridSource {
           overflow: TextOverflow.ellipsis,
         ),
       ),
-      Container(
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            IconButton(
-              onPressed: (){
-                showDialog(
-                  context: context,
-                   builder: (_) => ShowRemoval(
-                     order: productlist[row.getCells()[10].value]
-                     )
-                   );
-              }, 
-              icon: Icon(
-                Icons.zoom_in,
-                color: Colors.blue,
-                )
-              ),
-            if(row.getCells()[8].value.toString().contains('UNCONFIRMED'))
-            IconButton(
-              onPressed: (){
-                showDialog(
-                  context: context,
-                   builder: (_) => AlertBox(
-                     header: 'confirmed', 
-                      onpress: (){
-                       removalProvider!
-                       .changeStatusToConfirm(
-                         productlist[row.getCells()[10].value]);
-                       print(row.getCells()[10].value);
-                       Navigator.of(context).pop();
-                      }
-                     )
-                   ); 
-              }, 
-              icon: Icon(
-                Icons.local_shipping,
-                color: Colors.grey,
-                )
-              ),
-            if(
-              row.getCells()[8].value.toString().contains('CONFIRMED') 
-              &&  row.getCells()[8].value.toString().length<10)
-            IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                   builder: (_) => AlertBox(
-                     header: 'delivered', 
-                     onpress: () async{
-                       removalProvider!
-                       .changeStatusToDelivered(
-                         productlist[row.getCells()[10].value]);
-                       buildDataGridRow();
-                       Navigator.of(context).pop();
-                      }
-                     )
-                   );
-              }, 
-              icon: Icon(
-                Icons.check_circle,
-                color: Colors.blue,
-                )
-              ),
-              if(
-              row.getCells()[8].value.toString().contains('ED'))
-            IconButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                   builder: (_) => AlertBox(
-                     header: 'deleted', 
-                     onpress: () async{
-                      removalProvider!
-                       .deleteSpecificRemoval(
-                         productlist[row.getCells()[10].value]);
-                       Navigator.of(context).pop();
-                      }
-                     )
-                   );
-              }, 
-              icon: Icon(
-                Icons.delete,
-                color: Colors.red,
-                )
-              ),
-          ],
-        )
-      )
     ]);
   }
 }

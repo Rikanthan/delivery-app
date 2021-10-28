@@ -1,7 +1,6 @@
 import 'package:delivery_app/page/admin.dart';
 import 'package:delivery_app/widgets/button.dart';
 import 'package:delivery_app/widgets/text_input.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

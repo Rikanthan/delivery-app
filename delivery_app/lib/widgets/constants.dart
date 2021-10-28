@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 List<String> deliveryColumnName = ["ownerName","stockAddress","deliveryAddress",
-"ownerEmail","ownerPhoneNumber","status","orderDate","description","action"];
+"ownerEmail","ownerPhoneNumber","status","orderDate","description"];
 
 List<String> deliveryHeaders = ["Name","Stock Address","Delivery Address","Email",
-"Phone No","Status","Order Date","Description","Action"];
+"Phone No","Status","Order Date","Description"];
 
 List<String> removalColumnName = ["ownerName","stockAddress","deliveryAddress",
 "ownerEmail","ownerPhoneNumber","serviceType","status","orderDate","description"];
@@ -14,16 +14,16 @@ List<String> removalHeaders = ["Name","Stock Address","Delivery Address","Email"
 "Phone No","Removal Type","status","Order Date","Description"];
 
 List<String> transportColumnName = ["name","email","phone","address",
-"description","frightTo","frightfrom","orderDate","status","action"];
+"description","frightTo","frightfrom","orderDate","status"];
 
 List<String> transportHeaders = ["Name","Email","Phone","Address",
-"Description","Fright To","Freight From","Order Date","Status","Action"];
+"Description","Fright To","Freight From","Order Date","Status"];
 
 List<String> cleaningColumnName = ["name","email","phone","address",
-"description","orderDate","status","action"];
+"description","orderDate","status"];
 
 List<String> cleaningHeaders = ["Name","Email","Phone","Address",
-"Description","Order Date","Status","Action"];
+"Description","Order Date","Status"];
 
 List<GridColumn> getColumns(List<String> columnName, List<String> headers) {
     List<GridColumn> columns;
@@ -46,7 +46,9 @@ List<GridColumn> getColumns(List<String> columnName, List<String> headers) {
           GridColumn(
         allowSorting: true,
         columnName: columnName[i],
-        width: i == 0 ? 65 : i == columnName.length - 1 ? 170 : 100,
+        width: i == 0 ? 65 
+        : columnName[i].contains("description") ? 170 :
+         columnName[i].contains("status") ? 120 : 100,
         label: Container(
           padding: EdgeInsets.all(8),
           alignment: Alignment.centerLeft,
@@ -67,5 +69,6 @@ List<GridColumn> getColumns(List<String> columnName, List<String> headers) {
     delivery,
     removal,
     transport,
-    cleaning    
+    cleaning,
+    feedback    
   }

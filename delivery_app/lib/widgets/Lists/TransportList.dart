@@ -1,46 +1,46 @@
-import 'package:delivery_app/models/removal.dart';
-import 'package:delivery_app/providers/RemovalProvider.dart';
-import 'package:delivery_app/widgets/DataGridSources/removalTableGrid.dart';
+import 'package:delivery_app/models/transport.dart';
+import 'package:delivery_app/providers/TransportProvider.dart';
+import 'package:delivery_app/widgets/DataGridSources/transportTableGrid.dart';
+import 'package:delivery_app/widgets/AlertBox/ShowTransport.dart';
 import 'package:delivery_app/widgets/AlertBox/alertbox.dart';
 import 'package:delivery_app/widgets/constants.dart';
-import 'package:delivery_app/widgets/AlertBox/showRemoval.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-  late RemovalProvider removalProvider;
-  late RemovalTableGridSource _removalTableGridSource;
+  late TransportProvider removalProvider;
+  late TransportTableGridSource _removalTableGridSource;
 
-class RemovalList extends StatefulWidget {
-   RemovalList({ Key? key
+class TransportList extends StatefulWidget {
+   TransportList({ Key? key
    }) : super(key: key);
   
   @override
-  _RemovalListState createState() => _RemovalListState();
+  _TransportListState createState() => _TransportListState();
 }
 
-class _RemovalListState extends State<RemovalList> {
- late Future<List<Removal>> removalList;
- List<Removal>? rProductList ;
+class _TransportListState extends State<TransportList> {
+ late Future<List<Transport>> removalList;
+ List<Transport>? rProductList ;
  @override
   void initState() {
     super.initState();
-    removalProvider = Provider.of<RemovalProvider>(context, listen: false);
-    removalList = removalProvider.fetchAllRemovals();
+    removalProvider = Provider.of<TransportProvider>(context, listen: false);
+    removalList = removalProvider.fetchAllTransports();
     removalList.then((value) => rProductList);
   }
 
   @override
   Widget build(BuildContext context) {
-    removalProvider = Provider.of<RemovalProvider>(context);
-    return FutureBuilder<List<Removal>> (
+    removalProvider = Provider.of<TransportProvider>(context);
+    return FutureBuilder<List<Transport>> (
                 builder: (BuildContext context, snapshot) {
                    if(snapshot.hasData && snapshot.connectionState 
                         == ConnectionState.done)
                    {
                      rProductList = snapshot.data!;
-                      _removalTableGridSource = RemovalTableGridSource(context, rProductList!);
+                      _removalTableGridSource = TransportTableGridSource(context, rProductList!);
                       return SfDataGrid(
                         allowPullToRefresh: true,
                         allowSwiping: true,
@@ -54,7 +54,7 @@ class _RemovalListState extends State<RemovalList> {
                                         showDialog(
                                           context: context,
                                            builder: (_) =>
-                                           ShowRemoval(order: rProductList![rowIndex])
+                                           ShowTransport(order: rProductList![rowIndex])
                                            );                           
                                     },
                                      icon: Icon(
@@ -122,7 +122,7 @@ class _RemovalListState extends State<RemovalList> {
                                         AlertBox(header: 'deleted',
                                        onpress: (){
                                           setState(() {
-                                      removalProvider.deleteSpecificRemoval(
+                                      removalProvider.deleteSpecificTransport(
                                                             rProductList![rowIndex]);
                                                             rProductList!.removeAt(rowIndex);
                                       _removalTableGridSource.dataGridRows.toList().removeAt(rowIndex);                     
@@ -141,7 +141,7 @@ class _RemovalListState extends State<RemovalList> {
                             ],
                           );
                         },
-                          columns: getColumns(removalColumnName,removalHeaders),
+                          columns: getColumns(transportColumnName,transportHeaders),
                           allowSorting: true,
                           allowEditing: true,
                           allowMultiColumnSorting: true,

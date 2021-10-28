@@ -1,7 +1,5 @@
 import 'package:delivery_app/models/order.dart';
-import 'package:delivery_app/page/admin.dart';
-import 'package:delivery_app/widgets/alertbox.dart';
-import 'package:delivery_app/widgets/showAll.dart';
+import 'package:delivery_app/widgets/customContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -15,19 +13,6 @@ class DeliveryTableGridSource extends DataGridSource {
  final List<Delivery> productlist;
  final BuildContext context;
   void buildDataGridRow() {
-   int getIndex(int? id)
-    {
-      int i;
-      for(i= 0; i<productlist.length ;i++)
-      {
-        Delivery order = productlist[i];
-        if(id == order.orderID)
-        {
-          break;  
-        }
-      }
-      return i;
-    }
     dataGridRows = productlist.map<DataGridRow>((dataGridRow) {
       return DataGridRow(
         cells: [
@@ -45,7 +30,6 @@ class DeliveryTableGridSource extends DataGridSource {
             columnName: 'status', value: dataGridRow.status),
         DataGridCell<String>(columnName: 'orderdate', value: dataGridRow.orderDate),
         DataGridCell<String>(columnName: 'description', value: dataGridRow.description),
-        DataGridCell<int>(columnName: 'actions', value: getIndex(dataGridRow.orderID))
       ]);
     }).toList(growable: false);
   }
@@ -71,18 +55,9 @@ class DeliveryTableGridSource extends DataGridSource {
           overflow: TextOverflow.ellipsis,
         ),
       ),
-      Container(
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.all(8.0),
-        color: row.getCells()[6].value.toString().contains('UNCONFIRMED') 
-                ? Colors.orange 
-                : row.getCells()[6].value.toString().contains('DELIVERED') ?
-                Colors.blue : Colors.green,
-        child: Text(
-         row.getCells()[6].value.toString(),
-          overflow: TextOverflow.ellipsis,
+      CustomContainer(
+        header: row.getCells()[6].value.toString()
         ),
-      ),
       Container(
         alignment: Alignment.centerLeft,
         padding: EdgeInsets.all(8.0),
@@ -99,15 +74,6 @@ class DeliveryTableGridSource extends DataGridSource {
           overflow: TextOverflow.ellipsis,
         ),
       ),
-      Container(
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            
-          ],
-        )
-      )
     ]);
   }
 }

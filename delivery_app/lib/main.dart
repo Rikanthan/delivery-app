@@ -1,7 +1,9 @@
-import 'package:delivery_app/page/admin.dart';
 import 'package:delivery_app/page/login.dart';
+import 'package:delivery_app/providers/CleaningProvider.dart';
 import 'package:delivery_app/providers/DeliveryProvider.dart';
+import 'package:delivery_app/providers/FeedbackProvider.dart';
 import 'package:delivery_app/providers/RemovalProvider.dart';
+import 'package:delivery_app/providers/TransportProvider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     print('Background msg: ${message.messageId}');
   }
     on FirebaseException catch(e){
+      print(e);
       rethrow;
     }
   }
@@ -60,7 +63,10 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<DeliveryProvider>.value(value: DeliveryProvider()),
-        ChangeNotifierProvider<RemovalProvider>.value(value: RemovalProvider())
+        ChangeNotifierProvider<RemovalProvider>.value(value: RemovalProvider()),
+        ChangeNotifierProvider<TransportProvider>.value(value: TransportProvider()),
+        ChangeNotifierProvider<CleaningProvider>.value(value: CleaningProvider()),
+        ChangeNotifierProvider<FeedbacksProvider>.value(value: FeedbacksProvider()),
     ],
     child:MaterialApp(
       debugShowCheckedModeBanner: false,

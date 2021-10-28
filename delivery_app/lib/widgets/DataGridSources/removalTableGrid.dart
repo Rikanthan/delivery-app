@@ -1,4 +1,5 @@
 import 'package:delivery_app/models/removal.dart';
+import 'package:delivery_app/widgets/customContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -58,44 +59,11 @@ class RemovalTableGridSource extends DataGridSource {
           overflow: TextOverflow.ellipsis,
         ),
       ),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            row.getCells()[6].value.toString().contains("home")
-                  ? "Home" : 
-                  row.getCells()[6].value.toString().contains("Local")
-                  ? "Local" :
-                  row.getCells()[6].value.toString().contains("Office")
-                  ? "Office" :
-                  "Interstate",
-            overflow: TextOverflow.ellipsis,
-          ),
-          color: row.getCells()[6].value.toString().contains("home")
-                  ? Colors.cyan : 
-                  row.getCells()[6].value.toString().contains("Local")
-                  ? Colors.orangeAccent :
-                  row.getCells()[6].value.toString().contains("Office")
-                  ? Colors.blue : 
-                  Colors.pink,  
-        ),
+      CustomContainer(
+      header: row.getCells()[6].value.toString()
       ),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          alignment: Alignment.centerLeft,
-          padding: EdgeInsets.all(8.0),
-          color: row.getCells()[8].value.toString().contains('UNCONFIRMED') 
-                  ? Colors.orange 
-                  : row.getCells()[8].value.toString().contains('DELIVERED') ?
-                  Colors.blue : Colors.green,
-          child: Text(
-           row.getCells()[8].value.toString().toLowerCase(),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
+      CustomContainer(
+      header: row.getCells()[8].value.toString()
       ),
       Container(
         alignment: Alignment.centerLeft,

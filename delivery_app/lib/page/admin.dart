@@ -1,10 +1,13 @@
+import 'package:delivery_app/widgets/Lists/CleaningList.dart';
 import 'package:delivery_app/widgets/Lists/DeliveryList.dart';
+import 'package:delivery_app/widgets/Lists/FeedbackList.dart';
 import 'package:delivery_app/widgets/Lists/RemovalList.dart';
+import 'package:delivery_app/widgets/Lists/TransportList.dart';
 import 'package:delivery_app/widgets/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
- ServicesClicked servicesClicked = ServicesClicked.removal;
+ ServicesClicked servicesClicked = ServicesClicked.delivery;
 class DeliveryTableGrid extends StatefulWidget {
   @override
   _DeliveryTableGridState createState() => _DeliveryTableGridState();
@@ -12,15 +15,15 @@ class DeliveryTableGrid extends StatefulWidget {
 }
 
 class _DeliveryTableGridState extends State<DeliveryTableGrid> {
-
  @override
   void initState() {
     super.initState();
-     SystemChrome.setPreferredOrientations([
+      SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-  ]);
+      DeviceOrientation.landscapeLeft
+    ]);   
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +85,17 @@ class _DeliveryTableGridState extends State<DeliveryTableGrid> {
               });
             },
           ),
+          ListTile(
+             selected: servicesClicked == ServicesClicked.feedback ? true : false,
+            selectedTileColor: Colors.cyan[100],
+            leading: Icon(Icons.feedback),
+            title: const Text('Feedbacks'),
+            onTap: () {
+              Navigator.of(context)
+              .push(
+                MaterialPageRoute(builder: (_)=>FeedbackList()));
+            },
+          ),
         ],
       ),
     ),
@@ -91,7 +105,10 @@ class _DeliveryTableGridState extends State<DeliveryTableGrid> {
             child: servicesClicked == ServicesClicked.delivery ?
              DeliveryList():
               servicesClicked == ServicesClicked.removal ?
-           RemovalList() : null
+           RemovalList() : 
+           servicesClicked == ServicesClicked.transport ? 
+           TransportList() : 
+           CleaningList() 
           ),      
       ),
     );

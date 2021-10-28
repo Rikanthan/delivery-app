@@ -1,6 +1,7 @@
-import 'package:delivery_app/models/order.dart';
-import 'package:delivery_app/providers/DeliveryProvider.dart';
-import 'package:delivery_app/widgets/DataGridSources/deliveryTableGrid.dart';
+import 'package:delivery_app/models/cleaning.dart';
+import 'package:delivery_app/providers/CleaningProvider.dart';
+import 'package:delivery_app/widgets/DataGridSources/cleaningTableGrid.dart';
+import 'package:delivery_app/widgets/AlertBox/ShowCleaning.dart';
 import 'package:delivery_app/widgets/AlertBox/alertbox.dart';
 import 'package:delivery_app/widgets/constants.dart';
 import 'package:delivery_app/widgets/AlertBox/showAll.dart';
@@ -8,37 +9,37 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-late DeliveryTableGridSource _orderTableGridSource;
-late DeliveryProvider _deliveryProvider;
+late CleaningTableGridSource _orderTableGridSource;
+late CleaningProvider _deliveryProvider;
 
 
-class DeliveryList extends StatefulWidget {
-  const DeliveryList({ Key? key }) : super(key: key);
+class CleaningList extends StatefulWidget {
+  const CleaningList({ Key? key }) : super(key: key);
 
   @override
-  _DeliveryListState createState() => _DeliveryListState();
+  _CleaningListState createState() => _CleaningListState();
 }
 
-class _DeliveryListState extends State<DeliveryList> {
- late Future<List<Delivery>>deliveryList;
- List<Delivery>? productList ;
+class _CleaningListState extends State<CleaningList> {
+ late Future<List<Cleaning>>deliveryList;
+ List<Cleaning>? productList ;
  @override
   void initState() {
     super.initState();
-    _deliveryProvider = Provider.of<DeliveryProvider>(context, listen: false);
-    deliveryList = _deliveryProvider.fetchAllDeliverys();
+    _deliveryProvider = Provider.of<CleaningProvider>(context, listen: false);
+    deliveryList = _deliveryProvider.fetchAllCleanings();
     deliveryList.then((value) => productList);
   }
 
   @override
   Widget build(BuildContext context) {
-    _deliveryProvider = Provider.of<DeliveryProvider>(context);
-    return FutureBuilder<List<Delivery>> (
+    _deliveryProvider = Provider.of<CleaningProvider>(context);
+    return FutureBuilder<List<Cleaning>> (
                 builder: (BuildContext context, snapshot) {
                    if(snapshot.hasData && snapshot.connectionState == ConnectionState.done)
                    {
                      productList = snapshot.data!;
-                     _orderTableGridSource = DeliveryTableGridSource(context, productList!);
+                     _orderTableGridSource = CleaningTableGridSource(context, productList!);
                       return SfDataGrid(
                         allowPullToRefresh: true,
                         allowSwiping: true,
@@ -51,7 +52,7 @@ class _DeliveryListState extends State<DeliveryList> {
                         onPressed: (){
                           showDialog(
                             context: context,
-                            builder: (_) => ShowAll(
+                            builder: (_) => ShowCleaning(
                               order: productList![rowIndex]
                               )
                             );
@@ -122,7 +123,7 @@ class _DeliveryListState extends State<DeliveryList> {
                                     onpress: (){
                                       setState(() {
                                         _deliveryProvider
-                                      .deleteSpecificDelivery(
+                                      .deleteSpecificCleaning(
                                         productList![rowIndex]);
                                         productList!.removeAt(rowIndex);
                                         _orderTableGridSource.buildDataGridRow();
@@ -140,7 +141,7 @@ class _DeliveryListState extends State<DeliveryList> {
                             ],
                           );
                         },
-                          columns: getColumns(deliveryColumnName,deliveryHeaders),
+                          columns: getColumns(cleaningColumnName,cleaningHeaders),
                           allowSorting: true,
                           allowEditing: true,
                           allowMultiColumnSorting: true,

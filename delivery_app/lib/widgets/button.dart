@@ -5,11 +5,11 @@ class CustomButton extends StatelessWidget {
     required this.onPress
   });
   final String buttonText;
-  final Function onPress;
+  final Function() onPress;
   @override
   Widget build(BuildContext context) {
     return Padding(
-                  padding: EdgeInsets.only(top: 50),
+                  padding: EdgeInsets.only(top: 30),
                   child: Center(
                   child:TextButton(
                    child: Text(
@@ -21,7 +21,7 @@ class CustomButton extends StatelessWidget {
                         fontWeight: FontWeight.bold
                       )
                     ),
-                    onPressed: onPress(),
+                    onPressed: onPress,
                    style:ButtonStyle(
                       backgroundColor: MaterialStateColor
                                                       .resolveWith(

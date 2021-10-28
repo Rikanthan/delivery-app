@@ -23,7 +23,7 @@ class CustomDrawer extends StatelessWidget {
             title: const Text('Delivery Service'),
             onTap: () {
               Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_)=> DeliveryTableGrid()));
+              .push(MaterialPageRoute(builder: (_)=> AdminPage()));
             },
           ),
           ListTile(

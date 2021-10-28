@@ -1,10 +1,15 @@
 import 'package:delivery_app/page/admin.dart';
+import 'package:delivery_app/providers/LoginProvider.dart';
 import 'package:delivery_app/widgets/button.dart';
 import 'package:delivery_app/widgets/text_input.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+late UsersProvider _usersProvider;
 
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_important',
@@ -30,6 +35,7 @@ class _LoginPageState extends State<LoginPage> {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   bool isLoading = false;
   String token = "";
+  bool error = false;
   late FirebaseMessaging messaging;
     @override
     void initState() { 
@@ -37,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
     messaging = FirebaseMessaging.instance;
     messaging.getToken().then((value){
       token = value.toString();
-        print(value);
+       _usersProvider = Provider.of<UsersProvider>(context,listen:false);
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) { 
       RemoteNotification? notification = message.notification;
@@ -65,10 +71,6 @@ class _LoginPageState extends State<LoginPage> {
    
     
       _saveDeviceToken() async {
-    // Get the current user
-    // FirebaseUser user = await _auth.currentUser();
-
-    // Get the token for this device
     String? fcmToken = await messaging.getToken();
 
     // Save it to Firestore
@@ -79,12 +81,17 @@ class _LoginPageState extends State<LoginPage> {
 
       await tokens.set({
         'token': fcmToken,
-        'createdAt': FieldValue.serverTimestamp()// optional
+        // optional
+      });
+      setState(() {
+        isLoading = true;
+        // error = true;
       });
     }
   }
   @override
   Widget build(BuildContext context) {
+    _usersProvider = Provider.of<UsersProvider>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -133,49 +140,68 @@ class _LoginPageState extends State<LoginPage> {
                     iconData: Icons.lock,
                     inputAction: TextInputAction.go,
                     ),
+                    if(error)
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left:30.0,top: 8.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.report,
+                              color: Colors.red,
+                            ),
+                            Text(
+                              " Username or Password error",
+                              style: TextStyle(
+                                color: Colors.red
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
                     CustomButton(
                       buttonText: 'Login', 
-                      onPress:(){
-                        try{
+                      onPress:() async{
                           _saveDeviceToken();
-                          WidgetsBinding.instance!.addPostFrameCallback((_) 
-                          { 
-                            Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (_)=> DeliveryTableGrid()
-                              ));
-                          });
-                          print("the token is- "+token);
-                         //_auth.signInWithEmailAndPassword(email: _usernameController.text, 
-                          //password: _passwordController.text);
-                          //  final User? user = (await _auth.signInWithEmailAndPassword(
-                          // email: _usernameController.text, password: _passwordController.text
-                          // )).user;
-                          // if(user != null)
-                          // {
-                          //   setState(() {
-                          //     isLoading = true;
-                          //   });
-                          //   Navigator.of(context)
-                          //                       .push(MaterialPageRoute(builder: (_)=>
-                          //                       JsonDataGrid()));
-                          // }
-                        }
-                        catch(e)
-                        {
-                          print(e);
-                        }
-                      
+                          _usersProvider
+                          .checkUser(
+                            _usernameController.text,
+                            _passwordController.text)
+                            .then((value) async {
+                              if(value == true)
+                              {
+                                SharedPreferences preferences = await SharedPreferences.getInstance();
+                                preferences
+                                .setString("username",_usernameController.text);
+                                setState(() {
+                                  error = false;
+                                });
+                                WidgetsBinding.instance!.addPostFrameCallback((_) 
+                                { 
+                                  Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (_)=> AdminPage()
+                                    ));
+                                });
+                              }
+                            else{
+                              setState(() {
+                                isLoading = false;
+                                error = true;
+                              });
+                            }
+                          });                      
                         }
                       ),
                       SizedBox(
                         height: 15,
                       ),
-                      Row(
-                        children: [
-
-                        ],
-                      )
+                      if(isLoading)
+                      Center(
+                        child: CircularProgressIndicator()
+                        ),
+                      
                   ],
                 ),
               )

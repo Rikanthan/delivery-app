@@ -1,3 +1,4 @@
+import 'package:delivery_app/page/login.dart';
 import 'package:delivery_app/widgets/Lists/CleaningList.dart';
 import 'package:delivery_app/widgets/Lists/DeliveryList.dart';
 import 'package:delivery_app/widgets/Lists/FeedbackList.dart';
@@ -6,15 +7,16 @@ import 'package:delivery_app/widgets/Lists/TransportList.dart';
 import 'package:delivery_app/widgets/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
  ServicesClicked servicesClicked = ServicesClicked.delivery;
-class DeliveryTableGrid extends StatefulWidget {
+class AdminPage extends StatefulWidget {
   @override
-  _DeliveryTableGridState createState() => _DeliveryTableGridState();
+  _AdminPageState createState() => _AdminPageState();
   
 }
 
-class _DeliveryTableGridState extends State<DeliveryTableGrid> {
+class _AdminPageState extends State<AdminPage> {
  @override
   void initState() {
     super.initState();
@@ -39,7 +41,24 @@ class _DeliveryTableGridState extends State<DeliveryTableGrid> {
           Container(
             height: 170,
             color: Colors.blue,
-            child: Center(child: Text('Lara Admin')) ,
+            child: Row(
+              children: [
+                Center(child: Text('Lara Admin')
+                ),
+                IconButton(
+                  onPressed: () async{
+                    SharedPreferences preferences = await SharedPreferences.getInstance();
+                    preferences.remove("username");
+                    Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (_) => LoginPage()
+                        ));
+                  }, 
+                  icon: Icon(Icons.logout)
+                  )
+              ],
+            ) ,
           ),
           ListTile(
             selected: servicesClicked == ServicesClicked.delivery ? true : false,

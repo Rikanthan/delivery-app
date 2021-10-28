@@ -23,7 +23,7 @@ class FeedbackItem extends StatelessWidget {
             children: [
               CircleAvatar(
                   radius: 30,
-                  backgroundImage: NetworkImage('https://i.pravatar.cc/150?img=${index}'),
+                  backgroundImage: NetworkImage('https://cdn-icons-png.flaticon.com/512/64/64572.png'),
                   backgroundColor: Colors.transparent,
                 ),
                 Column(

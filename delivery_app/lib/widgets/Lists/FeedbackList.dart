@@ -1,10 +1,15 @@
 import 'package:delivery_app/models/feedback.dart';
+import 'package:delivery_app/page/admin.dart';
+import 'package:delivery_app/page/login.dart';
 import 'package:delivery_app/providers/FeedbackProvider.dart';
 import 'package:delivery_app/widgets/FeedbackContainer.dart';
+import 'package:delivery_app/widgets/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+ServicesClicked servicesClicked = ServicesClicked.delivery;
 late FeedbacksProvider _feedbacksProvider;
 
 class FeedbackList extends StatefulWidget {
@@ -29,6 +34,20 @@ class _FeedbackListState extends State<FeedbackList> {
   Widget build(BuildContext context) {
     _feedbacksProvider = Provider.of<FeedbacksProvider>(context);
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Feedback List"),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios),
+          onPressed: (){
+              Navigator.of(context)
+                  .push(
+                    MaterialPageRoute(
+                      builder: (_)=> AdminPage()
+                      )
+                    );
+            },
+          ),
+        ),
       body: Container(
         child: FutureBuilder<List<Feedbacks>>(
           future: feedbackList,

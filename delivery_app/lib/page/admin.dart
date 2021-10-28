@@ -9,8 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
- ServicesClicked servicesClicked = ServicesClicked.delivery;
+
 class AdminPage extends StatefulWidget {
+  // AdminPage({required this.servicesClicked});
+  // final ServicesClicked servicesClicked;
   @override
   _AdminPageState createState() => _AdminPageState();
   
@@ -39,24 +41,42 @@ class _AdminPageState extends State<AdminPage> {
         padding: EdgeInsets.zero,
         children: [
           Container(
-            height: 170,
             color: Colors.blue,
-            child: Row(
+            child: Column(
               children: [
-                Center(child: Text('Lara Admin')
+                Padding(
+                  padding: const EdgeInsets.only(top:30.0,bottom: 10.0),
+                  child: CircleAvatar(
+                    radius: 30,
+                    backgroundImage: NetworkImage('https://cdn-icons-png.flaticon.com/512/64/64572.png'),
+                    backgroundColor: Colors.transparent,
+                  ),
                 ),
-                IconButton(
-                  onPressed: () async{
-                    SharedPreferences preferences = await SharedPreferences.getInstance();
-                    preferences.remove("username");
-                    Navigator.of(context)
-                    .push(
-                      MaterialPageRoute(
-                        builder: (_) => LoginPage()
-                        ));
-                  }, 
-                  icon: Icon(Icons.logout)
-                  )
+                Text(
+                  'Lara Admin',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontFamily: 'Lato',
+                    fontSize: 18
+                    ),
+                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                          onPressed: () async{
+                            SharedPreferences preferences = await SharedPreferences.getInstance();
+                            preferences.remove("username");
+                            Navigator.of(context)
+                            .push(
+                              MaterialPageRoute(
+                                builder: (_) => LoginPage()
+                                ));
+                          }, 
+                          icon: Icon(Icons.logout)
+                          ),
+                  ],
+                )
               ],
             ) ,
           ),

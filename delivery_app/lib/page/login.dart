@@ -1,10 +1,11 @@
 import 'package:delivery_app/page/admin.dart';
 import 'package:delivery_app/providers/LoginProvider.dart';
 import 'package:delivery_app/widgets/button.dart';
-import 'package:delivery_app/widgets/text_input.dart';
+import 'package:delivery_app/widgets/text_input.dart' as T;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,6 +41,9 @@ class _LoginPageState extends State<LoginPage> {
     @override
     void initState() { 
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     messaging = FirebaseMessaging.instance;
     messaging.getToken().then((value){
       token = value.toString();
@@ -126,14 +130,14 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                 ),
                  ),
-                  TextInput(
+                  T.TextInput(
                     controller: _usernameController,
                     hideText: false, 
                     hintText: 'Username', 
                     iconData: Icons.person,
                     inputAction: TextInputAction.next,
                     ),
-                    TextInput(
+                    T.TextInput(
                     controller: _passwordController,
                     hideText: true, 
                     hintText: 'Password', 

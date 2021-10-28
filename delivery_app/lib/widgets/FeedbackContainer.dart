@@ -12,7 +12,6 @@ class FeedbackItem extends StatelessWidget {
   final int index; 
   @override
   Widget build(BuildContext context) {
-    double c_width = MediaQuery.of(context).size.width*0.6;
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(

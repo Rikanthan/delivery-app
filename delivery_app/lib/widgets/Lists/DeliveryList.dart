@@ -11,7 +11,6 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 late DeliveryTableGridSource _orderTableGridSource;
 late DeliveryProvider _deliveryProvider;
 
-
 class DeliveryList extends StatefulWidget {
   const DeliveryList({ Key? key }) : super(key: key);
 
@@ -99,7 +98,7 @@ class _DeliveryListState extends State<DeliveryList> {
                                             setState(() {
                                               _deliveryProvider
                                             .changeStatusToDelivered(
-                                              productList![row.getCells()[9].value]);
+                                              productList![rowIndex]);
                                               productList![rowIndex].status = 'DELIVERED';
                                             _orderTableGridSource.buildDataGridRow();
                                             });

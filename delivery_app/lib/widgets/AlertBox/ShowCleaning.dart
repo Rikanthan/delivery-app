@@ -7,17 +7,21 @@ class ShowCleaning extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Cleaning order Details'),
-      content: Column(
-        children: [
-          Text('Delivery id: ${order.orderID}'),
-          Text('Name: ${order.name}'),
-          Text('Email: ${order.email}'),
-          Text('Phone: ${order.phone}'),
-          Text('Stock Address: ${order.address}'),
-          Text('Delivery Date: ${order.orderDate}'),
-          Text('Description: ${order.description}'),
-        ],
+      title: Center(child: Text('Cleaning order Details')),
+      content: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text('Delivery id: ${order.orderID}'),
+            Text('Name: ${order.name}'),
+            Text('Email: ${order.email}'),
+            Text('Phone: ${order.phone}'),
+            Text('Stock Address: ${order.address}'),
+            Text('Delivery Date: ${order.orderDate}'),
+            Text('Description: ${order.description}'),
+          ],
+        ),
       ),
       actions: [
         TextButton(

@@ -9,8 +9,10 @@ class ShowRemoval extends StatelessWidget {
     return AlertDialog(
       title: Text('Removal Details'),
       contentPadding: EdgeInsets.all(8),
-      content: Container(
+      content: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text('Delivery id: ${order.orderID}'),
             Text('Name: ${order.ownerName}'),

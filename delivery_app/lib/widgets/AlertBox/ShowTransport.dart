@@ -9,8 +9,10 @@ class ShowTransport extends StatelessWidget {
     return AlertDialog(
       title: Text('Transport Details'),
       contentPadding: EdgeInsets.all(8),
-      content: Container(
+      content: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Delivery id: ${order.orderID}'),
             Text('Name: ${order.name}'),

@@ -7,18 +7,23 @@ class ShowAll extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Delivery Details'),
-      content: Column(
-        children: [
-          Text('Delivery id: ${order.orderID}'),
-          Text('Name: ${order.ownerName}'),
-          Text('Stock Address: ${order.stockAddress}'),
-          Text('Delivery Address: ${order.deliveryAddress}'),
-          Text('Email: ${order.ownerEmail}'),
-          Text('Phone: ${order.ownerPhone}'),
-          Text('Delivery Date: ${order.orderDate}'),
-          Text('Description: ${order.description}'),
-        ],
+      title: Center(
+        child: Text('Delivery Details')),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Delivery id: ${order.orderID}'),
+              Text('Name: ${order.ownerName}'),
+              Text('Stock Address: ${order.stockAddress}'),
+              Text('Delivery Address: ${order.deliveryAddress}'),
+              Text('Email: ${order.ownerEmail}'),
+              Text('Phone: ${order.ownerPhone}'),
+              Text('Delivery Date: ${order.orderDate}'),
+              Text('Description: ${order.description}'),
+            ],
+        ),
       ),
       actions: [
         TextButton(

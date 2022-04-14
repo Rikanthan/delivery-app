@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:delivery_app/widgets/Icons/GredientIcon.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:delivery_app/models/feedback.dart';
 import 'package:flutter/material.dart';
 
@@ -28,15 +27,7 @@ class FeedbackItem extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  RatingBarIndicator(
-                        rating: feedback.rating!.toDouble(),
-                        itemBuilder: (context, index) => GredientIcon(
-                          Icons.star, 50
-                          ),
-                        itemCount: 5,
-                        itemSize: 50.0,
-                        direction: Axis.horizontal,
-                    ),
+                
                  
                    Text(
                       feedback.name.toString().capitalize(),

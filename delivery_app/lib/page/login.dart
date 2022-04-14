@@ -2,26 +2,12 @@ import 'package:delivery_app/page/admin.dart';
 import 'package:delivery_app/providers/LoginProvider.dart';
 import 'package:delivery_app/widgets/button.dart';
 import 'package:delivery_app/widgets/text_input.dart' as T;
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 late UsersProvider _usersProvider;
-
-const AndroidNotificationChannel channel = AndroidNotificationChannel(
-  'high_important',
-  'Important notifications',
-  'This is description for this channel',
-  importance: Importance.high,
-  playSound: true
-  );
-
-  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = 
-  FlutterLocalNotificationsPlugin();
 
 class LoginPage extends StatefulWidget {
   const LoginPage({ Key? key }) : super(key: key);
@@ -33,65 +19,16 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
   bool isLoading = false;
   String token = "";
   bool error = false;
-  late FirebaseMessaging messaging;
+  
     @override
     void initState() { 
     super.initState();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    messaging = FirebaseMessaging.instance;
-    messaging.getToken().then((value){
-      token = value.toString();
-       _usersProvider = Provider.of<UsersProvider>(context,listen:false);
-    });
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) { 
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android =  message.notification?.android;
-      if(notification != null && android != null)
-      {
-        flutterLocalNotificationsPlugin.show(
-          notification.hashCode,
-          notification.title,
-          notification.body,
-          NotificationDetails(
-            android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
-              channel.description,
-              color: Colors.blue,
-              playSound: true,
-              icon: '@mipmap/ic_launcher'
-            )
-          )
-        );
-      }
-    });
-  }
-   
-    
-      _saveDeviceToken() async {
-    String? fcmToken = await messaging.getToken();
-
-    // Save it to Firestore
-    if (fcmToken != null) {
-      var tokens = _db
-          .collection('devicetokens')
-          .doc(fcmToken);
-
-      await tokens.set({
-        'token': fcmToken,
-        // optional
-      });
-      setState(() {
-        isLoading = true;
-        // error = true;
-      });
-    }
   }
   @override
   Widget build(BuildContext context) {
@@ -107,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.only(
                   top: 50
                 ),
-                child: Image.asset('assets/images/lara-logo.png'),
+                child: Image.asset('assets/Images/lara-logo.png'),
                 )
               ),
               Card(
@@ -167,7 +104,6 @@ class _LoginPageState extends State<LoginPage> {
                     CustomButton(
                       buttonText: 'Login', 
                       onPress:() async{
-                          _saveDeviceToken();
                           _usersProvider
                           .checkUser(
                             _usernameController.text,
